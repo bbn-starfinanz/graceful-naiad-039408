@@ -66,6 +66,7 @@ type PomodoroState = {
   startTimer: () => void
   pauseTimer: () => void
   resumeTimer: () => void
+  resetTimer: () => void
   startNextSprint: () => void
   tick: () => void
 }
@@ -443,6 +444,16 @@ export const usePomodoroStore = create<PomodoroState>()(
 
       resumeTimer: () => {
         set({ isRunning: true })
+      },
+
+      resetTimer: () => {
+        set({
+          phase: 'focus',
+          sprintStarted: false,
+          isRunning: false,
+          focusRemaining: FOCUS_SECONDS,
+          breakRemaining: BREAK_SECONDS,
+        })
       },
 
       startNextSprint: () => {

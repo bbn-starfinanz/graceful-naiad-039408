@@ -314,6 +314,7 @@ function App() {
     startTimer,
     pauseTimer,
     resumeTimer,
+    resetTimer,
     startNextSprint,
   } = usePomodoroStore()
   const { displayTime, totalDisplayTime, progressPercent } = usePomodoroTimer()
@@ -916,6 +917,18 @@ function App() {
                       Pause
                     </button>
                   )}
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      resetTimer()
+                      setWallPreviewOpen(false)
+                      playUiClick(440)
+                    }}
+                    className="rounded-xl border border-[color:var(--stroke)] px-4 py-2 text-sm font-semibold text-[color:var(--text-main)]"
+                  >
+                    Timer zurücksetzen
+                  </button>
                 </div>
               </motion.div>
             ) : (
@@ -1065,6 +1078,18 @@ function App() {
                       Nächsten Sprint vorbereiten
                     </button>
                   )}
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      resetTimer()
+                      setWallPreviewOpen(false)
+                      playUiClick(440)
+                    }}
+                    className="rounded-xl border border-[color:var(--stroke)] px-4 py-2 text-sm font-semibold text-[color:var(--text-main)]"
+                  >
+                    Timer zurücksetzen
+                  </button>
                 </div>
               </motion.div>
             )}
