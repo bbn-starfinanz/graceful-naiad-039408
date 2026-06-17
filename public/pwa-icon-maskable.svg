@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pomodoro Dopex Timer Maskable Icon">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="34%" r="78%">
+      <stop offset="0%" stop-color="#2ba58f" />
+      <stop offset="100%" stop-color="#112b2d" />
+    </radialGradient>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" rx="132" fill="url(#g)" />
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#dafef6" stroke-width="28" stroke-linecap="round" stroke-dasharray="770" stroke-dashoffset="94" />
+  <path d="M191 263 242 309 324 211" fill="none" stroke="#f3fff3" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

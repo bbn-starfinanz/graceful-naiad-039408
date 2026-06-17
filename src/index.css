@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@500;600;700&display=swap');
+@import 'tailwindcss';
+
+:root {
+  color-scheme: light dark;
+  --bg-a: #efe9df;
+  --bg-b: #cde4dd;
+  --bg-c: #f8f6ef;
+  --card: rgba(248, 249, 245, 0.83);
+  --card-strong: rgba(255, 255, 255, 0.95);
+  --stroke: rgba(36, 50, 52, 0.16);
+  --text-main: #142226;
+  --text-soft: #5a6d70;
+  --accent: #0f766e;
+  --accent-soft: rgba(15, 118, 110, 0.14);
+  --glow: rgba(12, 154, 130, 0.34);
+  --shadow: 0 28px 54px rgba(22, 33, 33, 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-a: #09141a;
+    --bg-b: #0a2220;
+    --bg-c: #0f1827;
+    --card: rgba(10, 22, 29, 0.74);
+    --card-strong: rgba(15, 30, 37, 0.92);
+    --stroke: rgba(176, 222, 211, 0.2);
+    --text-main: #e8f4f4;
+    --text-soft: #92b5b0;
+    --accent: #40c3a4;
+    --accent-soft: rgba(64, 195, 164, 0.16);
+    --glow: rgba(64, 195, 164, 0.36);
+    --shadow: 0 28px 64px rgba(0, 0, 0, 0.42);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  color: var(--text-main);
+  background:
+    radial-gradient(1200px 700px at 8% 12%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 55%),
+    radial-gradient(1000px 620px at 92% 88%, rgba(188, 239, 223, 0.34) 0%, rgba(188, 239, 223, 0) 52%),
+    linear-gradient(140deg, var(--bg-a), var(--bg-b) 52%, var(--bg-c));
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-shell {
+  width: min(860px, calc(100% - 2rem));
+  margin: clamp(1rem, 3.4vw, 2.6rem) auto;
+  border: 1px solid var(--stroke);
+  border-radius: 32px;
+  background: var(--card);
+  backdrop-filter: blur(24px) saturate(132%);
+  box-shadow: var(--shadow);
+}
+
+.app-title {
+  font-family: 'Sora', 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0.6px, transparent 0.6px);
+  background-size: 8px 8px;
+}
