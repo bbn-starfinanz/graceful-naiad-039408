@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { Transition } from 'framer-motion'
 import { usePomodoroTimer } from './hooks/usePomodoroTimer'
@@ -286,6 +286,20 @@ function TaskChip({
 function App() {
   const [activeView, setActiveView] = useState<AppView>('sprint')
   const [wallPreviewOpen, setWallPreviewOpen] = useState(false)
+  const [phaseSoundEnabled, setPhaseSoundEnabled] = useState(() => {
+    if (typeof window === 'undefined') {
+      return true
+    }
+
+    return window.localStorage.getItem('dopex.phaseSoundEnabled') !== 'false'
+  })
+  const [backgroundNotificationEnabled, setBackgroundNotificationEnabled] = useState(() => {
+    if (typeof window === 'undefined') {
+      return true
+    }
+
+    return window.localStorage.getItem('dopex.backgroundNotificationEnabled') !== 'false'
+  })
   const [draftTask, setDraftTask] = useState('')
   const [draftFunScore, setDraftFunScore] = useState(4)
   const [draftDurationScore, setDraftDurationScore] = useState(4)
@@ -318,6 +332,7 @@ function App() {
     startNextSprint,
   } = usePomodoroStore()
   const { displayTime, totalDisplayTime, progressPercent } = usePomodoroTimer()
+  const previousPhase = useRef(phase)
 
   const sortedTasks = useMemo(
     () =>
@@ -373,6 +388,69 @@ function App() {
   }, [completedThisSprint, sortedTasks])
 
   const topTask = sortedTasks[0]
+
+  useEffect(() => {
+    window.localStorage.setItem('dopex.phaseSoundEnabled', String(phaseSoundEnabled))
+  }, [phaseSoundEnabled])
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      'dopex.backgroundNotificationEnabled',
+      String(backgroundNotificationEnabled),
+    )
+  }, [backgroundNotificationEnabled])
+
+  useEffect(() => {
+    if (previousPhase.current === phase) {
+      return
+    }
+
+    previousPhase.current = phase
+
+    if (phaseSoundEnabled) {
+      playUiClick(phase === 'break' ? 980 : 640)
+    }
+
+    if (
+      !backgroundNotificationEnabled ||
+      typeof Notification === 'undefined' ||
+      !document.hidden ||
+      Notification.permission !== 'granted'
+    ) {
+      return
+    }
+
+    if (phase === 'break') {
+      new Notification('Pause gestartet', {
+        body: 'Fokusblock ist fertig. Zeit fuer eine kurze Pause.',
+      })
+      return
+    }
+
+    new Notification('Fokus gestartet', {
+      body: 'Pause ist fertig. Auf gehts in den naechsten Fokusblock.',
+    })
+  }, [backgroundNotificationEnabled, phase, phaseSoundEnabled])
+
+  const handleToggleBackgroundNotifications = async (enabled: boolean) => {
+    if (!enabled) {
+      setBackgroundNotificationEnabled(false)
+      return
+    }
+
+    if (typeof Notification === 'undefined') {
+      setBackgroundNotificationEnabled(false)
+      return
+    }
+
+    if (Notification.permission === 'granted') {
+      setBackgroundNotificationEnabled(true)
+      return
+    }
+
+    const permission = await Notification.requestPermission()
+    setBackgroundNotificationEnabled(permission === 'granted')
+  }
 
   const canStart = tasks.length >= 3 && tasks.length <= 5
   const timerButtonLabel = sprintStarted ? 'Fokus-Timer starten' : 'Timer solo'
@@ -527,6 +605,28 @@ function App() {
             <div className="rounded-full border border-[color:var(--stroke)] bg-[color:var(--card-strong)] px-4 py-2 text-sm text-[color:var(--text-soft)]">
               {showBreakView ? (wallPreviewOpen ? 'Wall Preview' : 'Break Phase') : 'Focus Phase'}
             </div>
+
+            <label className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stroke)] bg-[color:var(--card-strong)] px-3 py-2 text-xs text-[color:var(--text-soft)]">
+              <input
+                type="checkbox"
+                checked={phaseSoundEnabled}
+                onChange={(event) => setPhaseSoundEnabled(event.target.checked)}
+                className="accent-[color:var(--accent)]"
+              />
+              Ton bei Wechsel
+            </label>
+
+            <label className="inline-flex items-center gap-2 rounded-full border border-[color:var(--stroke)] bg-[color:var(--card-strong)] px-3 py-2 text-xs text-[color:var(--text-soft)]">
+              <input
+                type="checkbox"
+                checked={backgroundNotificationEnabled}
+                onChange={(event) => {
+                  void handleToggleBackgroundNotifications(event.target.checked)
+                }}
+                className="accent-[color:var(--accent)]"
+              />
+              Hinweis im Hintergrund
+            </label>
           </div>
         </div>
 
