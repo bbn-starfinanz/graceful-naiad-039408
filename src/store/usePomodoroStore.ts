@@ -36,6 +36,7 @@ type PomodoroState = {
   phase: SprintPhase
   sprintStarted: boolean
   isRunning: boolean
+  lastTickAt: number | null
   focusRemaining: number
   breakRemaining: number
   tasks: MicroTask[]
@@ -193,6 +194,7 @@ export const usePomodoroStore = create<PomodoroState>()(
       phase: 'focus',
       sprintStarted: false,
       isRunning: false,
+      lastTickAt: null,
       focusRemaining: FOCUS_SECONDS,
       breakRemaining: BREAK_SECONDS,
       tasks: [],
@@ -434,16 +436,17 @@ export const usePomodoroStore = create<PomodoroState>()(
 
           return {
             isRunning: true,
+            lastTickAt: Date.now(),
           }
         })
       },
 
       pauseTimer: () => {
-        set({ isRunning: false })
+        set({ isRunning: false, lastTickAt: null })
       },
 
       resumeTimer: () => {
-        set({ isRunning: true })
+        set({ isRunning: true, lastTickAt: Date.now() })
       },
 
       resetTimer: () => {
@@ -451,6 +454,7 @@ export const usePomodoroStore = create<PomodoroState>()(
           phase: 'focus',
           sprintStarted: false,
           isRunning: false,
+          lastTickAt: null,
           focusRemaining: FOCUS_SECONDS,
           breakRemaining: BREAK_SECONDS,
         })
@@ -461,6 +465,7 @@ export const usePomodoroStore = create<PomodoroState>()(
           phase: 'focus',
           sprintStarted: false,
           isRunning: false,
+          lastTickAt: null,
           focusRemaining: FOCUS_SECONDS,
           breakRemaining: BREAK_SECONDS,
           completedThisSprint: [],
@@ -474,49 +479,75 @@ export const usePomodoroStore = create<PomodoroState>()(
           return
         }
 
-        if (state.phase === 'focus') {
-          if (state.focusRemaining <= 1) {
-            const done = collectCompleted(state.tasks, state.completedThisSprint)
+        const now = Date.now()
+        const from = state.lastTickAt ?? now
+        let elapsedSeconds = Math.floor((now - from) / 1000)
 
-            set({
-              phase: 'break',
-              sprintStarted: false,
-              isRunning: true,
-              focusRemaining: FOCUS_SECONDS,
-              breakRemaining: BREAK_SECONDS,
-              tasks: state.tasks.filter((task) => !task.completed),
-              completedThisSprint: done,
-              sessionCount: state.sessionCount + 1,
-            })
-            return
-          }
-
-          set({
-            focusRemaining: state.focusRemaining - 1,
-          })
-
+        if (elapsedSeconds <= 0) {
           return
         }
 
-        if (state.breakRemaining <= 1) {
-          set({
-            phase: 'focus',
-            sprintStarted: false,
-            isRunning: false,
-            breakRemaining: BREAK_SECONDS,
-            focusRemaining: FOCUS_SECONDS,
-          })
-          return
+        let phase = state.phase
+        let sprintStarted = state.sprintStarted
+        let isRunning: boolean = state.isRunning
+        let focusRemaining = state.focusRemaining
+        let breakRemaining = state.breakRemaining
+        let tasks = state.tasks
+        let completedThisSprint = state.completedThisSprint
+        let sessionCount = state.sessionCount
+
+        while (elapsedSeconds > 0 && isRunning) {
+          if (phase === 'focus') {
+            if (elapsedSeconds < focusRemaining) {
+              focusRemaining -= elapsedSeconds
+              elapsedSeconds = 0
+              break
+            }
+
+            elapsedSeconds -= focusRemaining
+            const done = collectCompleted(tasks, completedThisSprint)
+
+            phase = 'break'
+            sprintStarted = false
+            isRunning = true
+            focusRemaining = FOCUS_SECONDS
+            breakRemaining = BREAK_SECONDS
+            tasks = tasks.filter((task) => !task.completed)
+            completedThisSprint = done
+            sessionCount += 1
+            continue
+          }
+
+          if (elapsedSeconds < breakRemaining) {
+            breakRemaining -= elapsedSeconds
+            elapsedSeconds = 0
+            break
+          }
+
+          elapsedSeconds -= breakRemaining
+          phase = 'focus'
+          sprintStarted = false
+          isRunning = false
+          breakRemaining = BREAK_SECONDS
+          focusRemaining = FOCUS_SECONDS
         }
 
         set({
-          breakRemaining: state.breakRemaining - 1,
+          phase,
+          sprintStarted,
+          isRunning,
+          lastTickAt: isRunning ? now : null,
+          focusRemaining,
+          breakRemaining,
+          tasks,
+          completedThisSprint,
+          sessionCount,
         })
       },
     }),
     {
       name: 'pomodoro-dopex-store',
-      version: 7,
+      version: 8,
       storage: createJSONStorage(() => localStorage),
       migrate: (persistedState) => {
         const state = persistedState as
@@ -550,6 +581,7 @@ export const usePomodoroStore = create<PomodoroState>()(
 
         return {
           ...state,
+          lastTickAt: state?.lastTickAt ?? null,
           tasks: (state?.tasks ?? []).map(withDefaults),
           recurringTemplates: normalizedTemplates,
           completedThisSprint: (state?.completedThisSprint ?? []).map(withDefaults),
@@ -559,6 +591,7 @@ export const usePomodoroStore = create<PomodoroState>()(
         phase: state.phase,
         sprintStarted: state.sprintStarted,
         isRunning: state.isRunning,
+        lastTickAt: state.lastTickAt,
         focusRemaining: state.focusRemaining,
         breakRemaining: state.breakRemaining,
         tasks: state.tasks,

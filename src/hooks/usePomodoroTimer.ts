@@ -33,6 +33,24 @@ export const usePomodoroTimer = () => {
     }
   }, [isRunning, tick])
 
+  useEffect(() => {
+    if (!isRunning) {
+      return
+    }
+
+    const sync = () => {
+      tick()
+    }
+
+    window.addEventListener('focus', sync)
+    document.addEventListener('visibilitychange', sync)
+
+    return () => {
+      window.removeEventListener('focus', sync)
+      document.removeEventListener('visibilitychange', sync)
+    }
+  }, [isRunning, tick])
+
   const displaySeconds = phase === 'focus' ? focusRemaining : breakRemaining
   const totalSeconds = phase === 'focus' ? FOCUS_SECONDS : BREAK_SECONDS
 
