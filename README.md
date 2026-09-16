@@ -9,6 +9,7 @@ Grundgeruest fuer ein Digital-Legacy-MVP mit Next.js App Router, Tailwind CSS un
 3. In Vercel unter **Settings -> Environment Variables** setzen:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+   - `NEXT_PUBLIC_SITE_URL`
    - `SUPABASE_SERVICE_ROLE_KEY`
 4. Deploy ausloesen.
 

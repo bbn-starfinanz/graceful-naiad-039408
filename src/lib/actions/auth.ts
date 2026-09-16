@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
+import { getSiteUrl } from "@/lib/supabase/env";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export interface AuthActionState {
@@ -33,10 +34,12 @@ export async function signUpAction(
     }
 
     const supabase = await createServerSupabaseClient();
+    const siteUrl = getSiteUrl();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: `${siteUrl}/login`,
         data: {
           full_name: fullName,
         },
