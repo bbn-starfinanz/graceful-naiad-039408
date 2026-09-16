@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { UploadForm } from "@/components/dashboard/upload-form";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Notice } from "@/components/ui/notice";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -62,6 +63,9 @@ export default async function DashboardPage() {
           <div className="mt-6 rounded-2xl border border-border bg-white/3 px-4 py-4 text-sm text-foreground/80">
             <span className="font-medium">Angemeldet als:</span>{" "}
             {dashboardData.user.email}
+          </div>
+          <div className="mt-6">
+            <SignOutButton />
           </div>
         </header>
 
@@ -156,7 +160,7 @@ async function loadDashboardData():
     }
 
     if (!user) {
-      redirect("/");
+      redirect("/login");
     }
 
     const { data: messages, error: messagesError } = await supabase

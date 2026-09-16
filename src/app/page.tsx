@@ -138,7 +138,7 @@ export default function Home() {
               <div className="flex flex-col gap-4 sm:flex-row">
                 <a
                   className="inline-flex items-center justify-center rounded-full border border-accent-strong/80 bg-[linear-gradient(135deg,#fbe6b0_0%,#d6a146_40%,#b86d4d_100%)] px-8 py-4 text-sm font-medium uppercase tracking-[0.16em] text-[#2f1b0a] shadow-[inset_0_1px_0_rgba(255,245,219,0.75),0_16px_50px_rgba(214,161,70,0.26)] transition duration-500 hover:shadow-[inset_0_1px_0_rgba(255,245,219,0.9),0_20px_60px_rgba(214,161,70,0.34)]"
-                  href="/dashboard"
+                  href="/login"
                 >
                   Ein Vermaechtnis beginnen
                 </a>
