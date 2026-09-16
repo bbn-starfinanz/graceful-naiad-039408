@@ -47,32 +47,32 @@ export default async function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-background px-6 py-10 text-foreground sm:px-10">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <header className="relative overflow-hidden rounded-[2.25rem] border border-border bg-card px-8 py-8 shadow-[0_30px_100px_rgba(0,0,0,0.55)]">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 sm:gap-8">
+        <header className="relative overflow-hidden rounded-[2rem] border border-border bg-card px-5 py-7 shadow-[0_30px_100px_rgba(0,0,0,0.55)] sm:rounded-[2.25rem] sm:px-8 sm:py-8">
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(240,215,161,0.08),transparent_40%,rgba(205,161,93,0.08))]" />
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-accent-strong">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent-strong sm:text-sm sm:tracking-[0.24em]">
             Dashboard
           </p>
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground">
+          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:mt-4 sm:text-3xl">
             Ihr gesicherter Bereich fuer digitale Nachlassbotschaften
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-muted sm:mt-3">
             Laden Sie Ihre Audio- oder Videobotschaften hoch, hinterlegen Sie
             Empfaenger und loesen Sie bei Bedarf einen Voucher ein.
           </p>
-          <div className="mt-6 rounded-2xl border border-border bg-white/3 px-4 py-4 text-sm text-foreground/80">
+          <div className="mt-5 rounded-2xl border border-border bg-white/3 px-4 py-4 text-sm text-foreground/80 sm:mt-6">
             <span className="font-medium">Angemeldet als:</span>{" "}
             {dashboardData.user.email}
           </div>
-          <div className="mt-6">
+          <div className="mt-5 sm:mt-6">
             <SignOutButton />
           </div>
         </header>
 
         <section className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_380px]">
-          <div className="rounded-[1.85rem] border border-border bg-card px-6 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)]">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-foreground">
+          <div className="rounded-[1.5rem] border border-border bg-card px-4 py-5 shadow-[0_20px_60px_rgba(0,0,0,0.28)] sm:rounded-[1.85rem] sm:px-6 sm:py-6">
+            <div className="mb-5 sm:mb-6">
+              <h2 className="text-lg font-semibold text-foreground sm:text-xl">
                 Neue Nachricht
               </h2>
               <p className="mt-2 text-sm text-muted">
@@ -84,12 +84,12 @@ export default async function DashboardPage() {
             <UploadForm userId={dashboardData.user.id} />
           </div>
 
-          <aside className="space-y-6">
-            <section className="rounded-[1.85rem] border border-border bg-card px-6 py-6 shadow-[0_18px_50px_rgba(0,0,0,0.24)]">
-              <h2 className="text-lg font-semibold text-foreground">
+          <aside className="space-y-4 sm:space-y-6">
+            <section className="rounded-[1.5rem] border border-border bg-card px-4 py-5 shadow-[0_18px_50px_rgba(0,0,0,0.24)] sm:rounded-[1.85rem] sm:px-6 sm:py-6">
+              <h2 className="text-base font-semibold text-foreground sm:text-lg">
                 Bereits hinterlegte Nachrichten
               </h2>
-              <div className="mt-4 space-y-4">
+              <div className="mt-3 space-y-3 sm:mt-4 sm:space-y-4">
                 {dashboardData.messages.length === 0 ? (
                   <Notice
                     message="Noch keine Nachrichten hinterlegt."

@@ -73,7 +73,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       </label>
 
       <button
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent-strong/80 bg-[linear-gradient(135deg,#fbe6b0_0%,#d6a146_40%,#b86d4d_100%)] px-8 py-4 text-sm font-medium uppercase tracking-[0.16em] text-[#2f1b0a] shadow-[inset_0_1px_0_rgba(255,245,219,0.75),0_16px_50px_rgba(214,161,70,0.26)] transition duration-500 disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-accent-strong/80 bg-[linear-gradient(135deg,#fbe6b0_0%,#d6a146_40%,#b86d4d_100%)] px-6 py-3 text-sm font-medium uppercase tracking-[0.14em] text-[#2f1b0a] shadow-[inset_0_1px_0_rgba(255,245,219,0.75),0_16px_50px_rgba(214,161,70,0.26)] transition duration-500 disabled:cursor-not-allowed disabled:opacity-60 sm:px-8 sm:py-4 sm:tracking-[0.16em]"
         disabled={isPending}
         type="submit"
       >
