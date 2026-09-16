@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a;
+  --background-deep: #040404;
+  --foreground: #f7efe1;
+  --muted: #d1c0aa;
+  --card: rgba(24, 16, 16, 0.64);
+  --card-strong: rgba(30, 17, 17, 0.85);
+  --surface: rgba(255, 240, 214, 0.05);
+  --border: rgba(221, 177, 97, 0.28);
+  --accent: #f5d48e;
+  --accent-strong: #d6a146;
+  --accent-copper: #b86d4d;
+  --accent-emerald: #12372d;
+  --accent-burgundy: #3b1118;
+  --accent-sapphire: #111f46;
+  --accent-soft: rgba(245, 212, 142, 0.14);
+  --hero-glow: rgba(214, 161, 70, 0.18);
+  --hero-glow-strong: rgba(184, 109, 77, 0.16);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-card-strong: var(--card-strong);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-copper: var(--accent-copper);
+  --color-accent-emerald: var(--accent-emerald);
+  --color-accent-burgundy: var(--accent-burgundy);
+  --color-accent-sapphire: var(--accent-sapphire);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-cormorant-upright);
+  --font-script: var(--font-great-vibes);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background-image:
+    radial-gradient(circle at 16% 12%, var(--hero-glow), transparent 18%),
+    radial-gradient(circle at 86% 14%, rgba(18, 55, 45, 0.24), transparent 18%),
+    radial-gradient(circle at 50% 0%, rgba(59, 17, 24, 0.2), transparent 28%),
+    radial-gradient(circle at 72% 68%, rgba(17, 31, 70, 0.22), transparent 22%),
+    radial-gradient(circle at 20% 76%, var(--hero-glow-strong), transparent 22%),
+    linear-gradient(180deg, var(--background) 0%, var(--background-deep) 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgba(221, 177, 97, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(221, 177, 97, 0.04) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(199, 160, 106, 0.24);
+}
+
+.luxury-frame {
+  position: relative;
+}
+
+.luxury-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(230, 210, 172, 0.34),
+    rgba(230, 210, 172, 0.08) 35%,
+    rgba(230, 210, 172, 0.16) 65%,
+    rgba(199, 160, 106, 0.3)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fade-in 900ms ease-out both;
+}
+
+.fade-in-delayed {
+  animation: fade-in 1200ms ease-out both;
+}
+
+.theater-rise {
+  animation: theater-rise 1400ms cubic-bezier(0.18, 1, 0.32, 1) both;
+}
+
+.gold-dust {
+  position: relative;
+}
+
+.gold-dust::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 24%, rgba(245, 212, 142, 0.65) 0, transparent 2px),
+    radial-gradient(circle at 78% 16%, rgba(214, 161, 70, 0.4) 0, transparent 2px),
+    radial-gradient(circle at 64% 64%, rgba(184, 109, 77, 0.35) 0, transparent 2px),
+    radial-gradient(circle at 24% 78%, rgba(245, 212, 142, 0.45) 0, transparent 2px),
+    radial-gradient(circle at 88% 74%, rgba(245, 212, 142, 0.3) 0, transparent 2px);
+  filter: blur(0.2px);
+  opacity: 0.75;
+}
+
+@keyframes theater-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
