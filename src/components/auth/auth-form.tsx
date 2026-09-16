@@ -26,8 +26,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   useEffect(() => {
     if (state.success && mode === "signin") {
-      router.push("/dashboard");
-      router.refresh();
+      window.location.assign("/dashboard");
     }
   }, [mode, router, state.success]);
 

@@ -44,7 +44,5 @@ export function updateSession(request: NextRequest) {
     },
   );
 
-  void supabase.auth.getUser();
-
-  return response;
+  return supabase.auth.getUser().then(() => response);
 }

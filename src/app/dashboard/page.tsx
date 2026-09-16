@@ -156,7 +156,7 @@ async function loadDashboardData():
     } = await supabase.auth.getUser();
 
     if (authError) {
-      throw new Error(authError.message);
+      redirect("/login");
     }
 
     if (!user) {
