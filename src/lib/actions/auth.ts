@@ -5,11 +5,15 @@ import { redirect } from "next/navigation";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { getSiteUrl } from "@/lib/supabase/env";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import type { Database } from "@/lib/types/database";
 
 export interface AuthActionState {
   success: boolean;
   message: string;
 }
+
+type ProfileAuditInsert =
+  Database["public"]["Tables"]["profiles_audit"]["Insert"];
 
 function getString(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -63,6 +67,23 @@ export async function signUpAction(
 
     if (profileError) {
       throw new Error(profileError.message);
+    }
+
+    const auditInsert: ProfileAuditInsert = {
+      profile_id: data.user.id,
+      action: "account_created",
+      metadata: {
+        email,
+        has_full_name: Boolean(fullName),
+      },
+    };
+
+    const { error: auditError } = await adminSupabase
+      .from("profiles_audit")
+      .insert(auditInsert);
+
+    if (auditError) {
+      throw new Error(auditError.message);
     }
 
     revalidatePath("/dashboard");

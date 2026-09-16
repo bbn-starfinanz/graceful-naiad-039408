@@ -41,3 +41,8 @@ export function getSiteUrl() {
 
   return `https://${siteUrl}`;
 }
+
+export function getSupabaseStorageUrl() {
+  const { supabaseUrl } = getSupabaseEnv();
+  return `${supabaseUrl}/storage/v1`;
+}

@@ -76,6 +76,18 @@ create table if not exists public.death_verifications (
   reviewed_at timestamptz
 );
 
+create table if not exists public.profile_audit (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  action text not null,
+  metadata jsonb,
+  created_at timestamptz not null default timezone('utc', now())
+);
+
+alter table public.profile_audit
+  add constraint profile_audit_action_check
+  check (action <> '');
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -103,6 +115,7 @@ alter table public.messages enable row level security;
 alter table public.recipients enable row level security;
 alter table public.vouchers enable row level security;
 alter table public.death_verifications enable row level security;
+alter table public.profile_audit enable row level security;
 
 drop policy if exists "profiles_select_own" on public.profiles;
 create policy "profiles_select_own"
@@ -219,6 +232,20 @@ on public.death_verifications
 for insert
 to anon, authenticated
 with check (true);
+
+drop policy if exists "profile_audit_select_own" on public.profile_audit;
+create policy "profile_audit_select_own"
+on public.profile_audit
+for select
+to authenticated
+using ((select auth.uid()) = profile_id);
+
+drop policy if exists "profile_audit_insert_admin" on public.profile_audit;
+create policy "profile_audit_insert_admin"
+on public.profile_audit
+for insert
+to authenticated
+with check (false);
 
 insert into storage.buckets (id, name, public)
 values ('legacy-media', 'legacy-media', false)
