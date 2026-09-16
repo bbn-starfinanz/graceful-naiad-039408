@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export interface AuthActionState {
@@ -50,7 +51,8 @@ export async function signUpAction(
       throw new Error("Registrierung fehlgeschlagen.");
     }
 
-    const { error: profileError } = await supabase.from("profiles").upsert({
+    const adminSupabase = createAdminSupabaseClient();
+    const { error: profileError } = await adminSupabase.from("profiles").upsert({
       id: data.user.id,
       full_name: fullName || null,
       status: "alive",
