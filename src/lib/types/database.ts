@@ -85,6 +85,50 @@ export interface Database {
           },
         ];
       };
+      secure_vault_items: {
+        Row: {
+          id: string;
+          profile_id: string;
+          item_type: "account" | "bank" | "pin" | "document" | "note";
+          title: string;
+          username: string | null;
+          encrypted_secret: string;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_id: string;
+          item_type: "account" | "bank" | "pin" | "document" | "note";
+          title: string;
+          username?: string | null;
+          encrypted_secret: string;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          profile_id?: string;
+          item_type?: "account" | "bank" | "pin" | "document" | "note";
+          title?: string;
+          username?: string | null;
+          encrypted_secret?: string;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "secure_vault_items_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       messages: {
         Row: {
           id: string;

@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { UploadForm } from "@/components/dashboard/upload-form";
+import { VideoPreviewUpload } from "@/components/dashboard/video-preview-upload";
+import { SecureVault } from "@/components/dashboard/secure-vault";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Notice } from "@/components/ui/notice";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -85,6 +87,8 @@ export default async function DashboardPage() {
           </div>
 
           <aside className="space-y-4 sm:space-y-6">
+            <VideoPreviewUpload />
+            <SecureVault />
             <section className="rounded-[1.5rem] border border-border bg-card px-4 py-5 shadow-[0_18px_50px_rgba(0,0,0,0.24)] sm:rounded-[1.85rem] sm:px-6 sm:py-6">
               <h2 className="text-base font-semibold text-foreground sm:text-lg">
                 Bereits hinterlegte Nachrichten

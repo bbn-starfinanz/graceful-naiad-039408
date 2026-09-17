@@ -1,3 +1,5 @@
+import { VideoPlayer } from "@/components/ui/video-player";
+
 const legacyExhibits = [
   {
     eyebrow: "Audio-Nachricht",
@@ -120,18 +122,28 @@ export default function Home() {
             <div className="space-y-8">
               <div className="space-y-5">
                 <p className="font-script text-3xl text-accent sm:text-4xl">
-                  A final message, beautifully preserved
+                  Weil Erinnerung etwas Wertvolles ist
                 </p>
                 <h1 className="max-w-5xl font-serif text-4xl leading-[0.98] font-semibold tracking-[0.02em] text-foreground sm:text-6xl lg:text-[6rem]">
-                  Hinterlassen Sie Ihre Stimme und Ihr Bild fuer die Zeit nach
-                  dem Tod.
+                  Eine sichere Heimat fuer Stimmen, Bilder und Worte, die
+                  bleiben sollen.
                 </h1>
                 <p className="max-w-3xl text-base leading-loose text-muted sm:text-lg">
-                  Final Echo ist ein exklusiver Digital-Legacy-Dienst, mit dem
-                  Sie persoenliche Audio-Nachrichten und filmische
-                  Video-Botschaften fuer Ihre Hinterbliebenen aufnehmen,
-                  sicher verwahren und erst nach verifizierter Freigabe
-                  zugaenglich machen.
+                  Final Echo wurde aus einem sehr persoenlichen Verlust
+                  geboren. Ich habe meine Mama und meine Oma frueh verloren und
+                  heute keine Erinnerungsstuecke mehr von ihnen. Genau daraus
+                  ist die Idee fuer diese Seite entstanden: ein Ort, an dem
+                  Menschen ihre Stimme, ihr Gesicht und ihre letzten Worte
+                  bewahren koennen, damit ihre Liebsten nicht eines Tages mit
+                  leeren Haenden und dem Gefuehl zurueckbleiben, zu wenig
+                  behalten zu haben.
+                </p>
+                <p className="max-w-3xl text-base leading-loose text-muted sm:text-lg">
+                  Hier koennen Audio- und Videobotschaften sicher hinterlegt,
+                  privat verwahrt und erst nach offizieller Verifikation
+                  freigegeben werden. So entsteht ein geschuetzter Ort fuer
+                  etwas, das unbezahlbar ist: echte Erinnerung, festgehalten
+                  fuer die Menschen, die bleiben.
                 </p>
               </div>
 
@@ -281,11 +293,10 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className="mt-6 rounded-[1.5rem] border border-border bg-surface p-4 sm:mt-8 sm:rounded-[1.8rem] sm:p-5">
-                    <div className="aspect-video rounded-[1.2rem] border border-border bg-[radial-gradient(circle_at_50%_28%,rgba(247,239,225,0.18),transparent_18%),linear-gradient(165deg,#3d1320_0%,#18131e_42%,#0b0b0b_100%)] p-4 sm:rounded-[1.4rem] sm:p-5">
-                      <div className="flex h-full items-center justify-center rounded-[0.9rem] border border-accent-strong/20 sm:rounded-[1rem]">
-                        <GoldPlaySeal />
-                      </div>
-                    </div>
+                    <VideoPlayer
+                      poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTI4MCcgaGVpZ2h0PSc3MjAnIHZpZXdCb3g9JzAgMCAxMjgwIDcyMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cmVjdCB3aWR0aD0nMTI4MCcgaGVpZ2h0PSc3MjAnIGZpbGw9JyMxMTExMTEnLz48L3N2Zz4="
+                      src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                    />
                   </div>
                 )}
               </article>

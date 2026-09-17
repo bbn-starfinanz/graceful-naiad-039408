@@ -24,6 +24,12 @@ export interface DashboardActionResult {
   message: string;
 }
 
+export interface UploadPreviewResult {
+  success: boolean;
+  message: string;
+  previewUrl?: string;
+}
+
 export interface ReportActionResult {
   success: boolean;
   message: string;
@@ -268,15 +274,47 @@ export async function createDeathVerification(
     return {
       success: true,
       message:
-      "Vielen Dank. Die Meldung wurde gespeichert und wird nun geprüft.",
+        "Vielen Dank. Die Meldung wurde gespeichert und wird nun geprüft.",
     };
   } catch (error) {
     return {
-    success: false,
-    message:
-      error instanceof Error
-        ? error.message
-        : "Die Meldung konnte nicht gespeichert werden.",
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Die Meldung konnte nicht gespeichert werden.",
+    };
+  }
+}
+
+export async function createVideoPreviewUrl(
+  formData: FormData,
+): Promise<UploadPreviewResult> {
+  try {
+    const file = formData.get("file");
+
+    if (!(file instanceof File) || file.size === 0) {
+      throw new Error("Bitte waehlen Sie zuerst eine Videodatei aus.");
+    }
+
+    if (!file.type.startsWith("video/")) {
+      throw new Error("Bitte laden Sie fuer die Vorschau eine Videodatei hoch.");
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+
+    return {
+      success: true,
+      message: "Videovorschau wurde erstellt.",
+      previewUrl,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Die Videovorschau konnte nicht erstellt werden.",
     };
   }
 }
